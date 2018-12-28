@@ -53,6 +53,8 @@ void writeArduinoOnMatrix() {
 
   
 
+
+  
   lc.setColumn(0,0,sonrisa[4]);
   lc.setColumn(0,1,sonrisa[3]);
   lc.setColumn(0,2,sonrisa[2]);
