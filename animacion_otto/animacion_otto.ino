@@ -3,9 +3,8 @@
 /*
  Now we need a LedControl to work with.
  ***** These pin numbers will probably not work with your hardware *****
- pin 12 is connected to the DataIn 
- pin 10 is connected to CLK 
- pin 11 is connected to the LOAD 
+ the pins are connected at (DataIn, CLK, LOAD)
+ the pins are connected at (12, 10, 11)
  We have only a single MAX72XX.
  */
 LedControl lc=LedControl(12,10,11,1);
