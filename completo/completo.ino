@@ -3,7 +3,9 @@
 #include <Oscillator.h>
 #include <BatReader.h>
 #include <US.h>
+#include "LedControl.h"
 
+LedControl lc=LedControl(12,10,11,1);
 
 
 //-- Zowi Library
@@ -40,6 +42,7 @@ Zowi zowi;  //This is Zowi!!
 
 
 //-- Movement parameters
+unsigned long delaytime=2000;
 int T=1000;              //Initial duration of movement
 int moveId=0;            //Number of movement
 int moveSize=15;         //Asociated with the height of some movements
@@ -53,12 +56,61 @@ int moveSize=15;         //Asociated with the height of some movements
 //--    * MODE = 4: ZowiPAD or any Teleoperation mode (listening SerialPort). 
 //---------------------------------------------------------
 volatile int MODE=0; //State of zowi in the principal state machine. 
+byte sonrisa[5]={B01111110,
+                   B01000010,
+                   B00100100,
+                   B00011000,
+                   B00000000};
+  
+  byte sorpresa[5]={B00011000,
+                    B00100100,
+                    B00100100,
+                    B00100100,
+                    B00011000};
 
+  byte jodido[5]={B01000010,
+                  B00100100,
+                  B00011000,
+                  B00100100,
+                  B01000010};
+
+  byte alegre[5]={B00000000,
+                  B01000010,
+                  B00100100,
+                  B00011000,
+                  B00000000};
 
 int randomDance=0;
 int randomSteps=0;
 
 bool obstacleDetected = false;
+
+void sonreir(){
+  lc.setColumn(0,0,sonrisa[4]);
+  lc.setColumn(0,1,sonrisa[3]);
+  lc.setColumn(0,2,sonrisa[2]);
+  lc.setColumn(0,3,sonrisa[1]);
+  lc.setColumn(0,4,sonrisa[0]);
+}
+
+void sorprender(){
+  lc.setColumn(0,0,sorpresa[4]);
+  lc.setColumn(0,1,sorpresa[3]);
+  lc.setColumn(0,2,sorpresa[2]);
+  lc.setColumn(0,3,sorpresa[1]);
+  lc.setColumn(0,4,sorpresa[0]);
+}
+
+
+void alegrar(){
+  lc.setColumn(0,0,alegre[4]);
+  lc.setColumn(0,1,alegre[3]);
+  lc.setColumn(0,2,alegre[2]);
+  lc.setColumn(0,3,alegre[1]);
+  lc.setColumn(0,4,alegre[0]);
+}
+
+
 
 
 ///////////////////////////////////////////////////////////////////
@@ -67,16 +119,18 @@ bool obstacleDetected = false;
 void setup(){
 
   //Serial communication initialization
-  Serial.begin(9600);  
+  Serial.begin(9600);
+  lc.shutdown(0,false);
+  /* Set the brightness to a medium values */
+  lc.setIntensity(0,8);
+  /* and clear the display */
+  lc.clearDisplay(0);
 
   
   //Set the servo pins
   zowi.init(PIN_YL,PIN_YR,PIN_RL,PIN_RR,true);
   zowi.home();
-
-
-  zowi.putMouth(culito);
-
+  
 
 }
 
