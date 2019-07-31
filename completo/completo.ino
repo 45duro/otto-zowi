@@ -143,101 +143,73 @@ void setup(){
 ///////////////////////////////////////////////////////////////////
 void loop() {
 
-    
+    //Leer obstaculos
+    obstacleDetector();
 
 
     zowi.home();
     delay(5000);
-    MODE=1;
   
 
-    switch (MODE) {
-
-      //-- MODE 1 - Dance Mode!
-      //---------------------------------------------------------
-      case 1:
-        
-        randomDance=random(5,21); //5,20
-        if((randomDance>14)&&(randomDance<19)){
-            randomSteps=1;
-            sonreir();
-            T=1600;
-        }
-        else{
-            randomSteps=random(3,6); //3,5
-            sorprender();
-            T=1000;
-        }
+    /*
+    //Danza aleatoria    
+    randomDance=random(5,21); //5,20
+    if((randomDance>14)&&(randomDance<19)){
+        randomSteps=1;
+        sonreir();
+        T=1600;
+    }
+    else{
+        randomSteps=random(3,6); //3,5
+        sorprender();
+        T=1000;
+    }
         
         
 
-        for (int i=0;i<randomSteps;i++){
-           
-            move(randomDance);
-            alegrar();
-        }
-        break;
+    for (int i=0;i<randomSteps;i++){
+       
+        move(randomDance);
+        alegrar();
+    }
+   
 
 
       //-- MODE 2 - Obstacle detector mode
       //---------------------------------------------------------
-      case 2:
+     
+     */
+     if(obstacleDetected){
 
-        if(obstacleDetected){
+          
 
-            
+          //Zowi takes two steps back
+          for(int i=0;i<3;i++){ 
+            zowi.walk(1,1300,-1);
+          }
 
-            //Zowi takes two steps back
-            for(int i=0;i<3;i++){ 
-              zowi.walk(1,1300,-1);
-            }
+          delay(100);
+          obstacleDetector();
+          delay(100);
+          
+         
+         //If there are no obstacles and no button is pressed, Zowi shows turns left
+         for(int i=0; i<3; i++){
+            if((obstacleDetected==true)){break;}            
+            else{ 
+                zowi.turn(1,1000,1); 
+                obstacleDetector();
+            } 
+         }
+               
 
-            delay(100);
-            obstacleDetector();
-            delay(100);
+      }else{
 
-
-           //If there are no obstacles and no button is pressed, Zowi shows a smile
-           if((obstacleDetected==true)){break;}            
-           else{
-              zowi.putMouth(smile);
-              delay(50);
-              obstacleDetector();
-           } 
-            
-           
-           //If there are no obstacles and no button is pressed, Zowi shows turns left
-           for(int i=0; i<3; i++){
-              if((obstacleDetected==true)){break;}            
-              else{ 
-                  zowi.turn(1,1000,1); 
-                  obstacleDetector();
-              } 
-           }
-            
-            //If there are no obstacles and no button is pressed, Zowi is happy
-            if((obstacleDetected==true)){break;}           
-            else{
-                zowi.home();
-                zowi.putMouth(happyOpen);
-                zowi.sing(S_happy_short);
-                delay(200);
-            }     
-        
-
-        }else{
-
-            zowi.walk(1,1000,1); //Zowi walk straight
-            obstacleDetector();
-        }   
-
-        break;
+          zowi.walk(1,1000,1); //Zowi walk straight
+          obstacleDetector();
+      }   
 
 
-      default:
-          MODE=4;
-          break;
-    }
 
    
 
@@ -247,7 +219,7 @@ void obstacleDetector(){
    
    
    int distance = distanceSensor.measureDistanceCm();
-
+   Serial.println(distance);
         if(distance<15){
           obstacleDetected = true;
         }else{
