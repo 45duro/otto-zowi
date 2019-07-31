@@ -4,9 +4,10 @@
 #include <BatReader.h>
 #include <US.h>
 #include "LedControl.h"
+#include <HCSR04.h>
 
 LedControl lc=LedControl(12,10,11,1);
-
+UltraSonicDistanceSensor distanceSensor(7, 6);  // Initialize sensor that uses digital pins 13 and 12.
 
 //-- Zowi Library
 #include <Zowi.h>
@@ -130,6 +131,7 @@ void setup(){
   //Set the servo pins
   zowi.init(PIN_YL,PIN_YR,PIN_RL,PIN_RR,true);
   zowi.home();
+
   
 
 }
@@ -141,23 +143,13 @@ void setup(){
 ///////////////////////////////////////////////////////////////////
 void loop() {
 
-
+    
 
 
     zowi.home();
-    delay(20000);
-    MODE=1;
-    delay(100); //Wait for all buttons 
-    zowi.sing(S_buttonPushed);
-    delay(200); //Wait for all buttons 
-
-  
-    zowi.putMouth(MODE);
- 
     delay(5000);
-    zowi.putMouth(happyOpen);
-
- 
+    MODE=1;
+  
 
     switch (MODE) {
 
@@ -168,18 +160,21 @@ void loop() {
         randomDance=random(5,21); //5,20
         if((randomDance>14)&&(randomDance<19)){
             randomSteps=1;
+            sonreir();
             T=1600;
         }
         else{
             randomSteps=random(3,6); //3,5
+            sorprender();
             T=1000;
         }
         
-        zowi.putMouth(random(10,21));
+        
 
         for (int i=0;i<randomSteps;i++){
+           
             move(randomDance);
-            
+            alegrar();
         }
         break;
 
@@ -249,8 +244,9 @@ void loop() {
 }  
 
 void obstacleDetector(){
-
-   int distance = zowi.getDistance();
+   
+   
+   int distance = distanceSensor.measureDistanceCm();
 
         if(distance<15){
           obstacleDetected = true;
