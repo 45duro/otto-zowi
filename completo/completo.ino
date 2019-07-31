@@ -148,30 +148,10 @@ void loop() {
 
 
     zowi.home();
-    delay(5000);
-  
+    
 
     /*
-    //Danza aleatoria    
-    randomDance=random(5,21); //5,20
-    if((randomDance>14)&&(randomDance<19)){
-        randomSteps=1;
-        sonreir();
-        T=1600;
-    }
-    else{
-        randomSteps=random(3,6); //3,5
-        sorprender();
-        T=1000;
-    }
-        
-        
-
-    for (int i=0;i<randomSteps;i++){
-       
-        move(randomDance);
-        alegrar();
-    }
+    
    
 
 
@@ -182,31 +162,35 @@ void loop() {
      if(obstacleDetected){
 
           
-
+          sorprender();
           //Zowi takes two steps back
           for(int i=0;i<3;i++){ 
             zowi.walk(1,1300,-1);
           }
-
-          delay(100);
-          obstacleDetector();
-          delay(100);
-          
-         
-         //If there are no obstacles and no button is pressed, Zowi shows turns left
-         for(int i=0; i<3; i++){
-            if((obstacleDetected==true)){break;}            
-            else{ 
-                zowi.turn(1,1000,1); 
-                obstacleDetector();
-            } 
-         }
-               
+              
 
       }else{
 
-          zowi.walk(1,1000,1); //Zowi walk straight
-          obstacleDetector();
+          //Danza aleatoria    
+          randomDance=random(5,21); //5,20
+          if((randomDance>14)&&(randomDance<19)){
+              randomSteps=1;
+              sonreir();
+              T=1600;
+          }
+          else{
+              randomSteps=random(3,6); //3,5
+              sonreir();
+              T=1000;
+          }
+              
+              
+      
+          for (int i=0;i<randomSteps;i++){
+             
+              move(randomDance);
+              alegrar();
+          }
       }   
 
 
